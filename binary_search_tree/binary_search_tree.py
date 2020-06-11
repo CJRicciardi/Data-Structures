@@ -9,6 +9,8 @@ This part of the project comprises two days:
 2. Implement the `in_order_print`, `bft_print`, and `dft_print` methods
    on the BSTNode class.
 """
+from ??? import deque
+#where are we importing deque from?
 class BSTNode:
     def __init__(self, value):
         self.value = value
@@ -17,20 +19,90 @@ class BSTNode:
 
     # Insert the given value into the tree
     def insert(self, value):
-        pass
+        # compare the value to the root's value to determine which direction
+        # we're gonna go in 
+        # if the value < root's value 
+        if value < self.value:
+            # go left 
+            # how do we go left?
+            # we have to check if there is another node on the left side
+            if self.left: 
+                # then self.left is a Node 
+                # now what?
+                self.left.insert(value)
+            else:
+                # then we can park the value here
+                self.left = BSTNode(value)
+        # else the value >= root's value 
+        else:
+            # go right
+            # how do we go right? 
+            # we have to check if there is another node on the right side 
+            if self.right:
+                # then self.right is a Node 
+                self.right.insert(value)
+            else:
+                self.right = BSTNode(value)
 
     # Return True if the tree contains the value
     # False if it does not
     def contains(self, target):
-        pass
+        # first, the base case we find the target in the tree node, or we get to a spot where the node should be, but isn't
+        if self.value == target:
+            return True
+        # now we need to figure out which direction to look in.
+        if target < self.value:
+            if not self.left:
+                return False
+            else:
+                return self.left.contains(target)
+
+        else:
+            if not self.right:
+                return False
+            else:
+                return self.right.contains(target)
+
+
 
     # Return the maximum value found in the tree
     def get_max(self):
-        pass
+        if not self.right:
+            # print(self.value)
+            return self.value
+
+        return self.right.get_max()
 
     # Call the function `fn` on the value of each node
-    def for_each(self, fn):
-        pass
+    def for_each(self, fn): # this is the depth first approach ###      # this mehtod specificaly wants to call fn on every single node
+        fn(self.value)
+
+        #how do we propogate to all the other nodes in the tree?
+        # is there a left child node?
+        # if yes then call it's for_each with the same function.
+
+        if self.left:
+            self.left.for_each(fn)
+        # is there a right child node?
+        # if yes then call it's for_each with the same function.
+        if self.left:
+            self.left.for_each(fn)
+
+    def depth_first_for_each(self, fn):
+        stack = []
+
+        stack.append(self)
+
+        while len(stack) > 0:
+            current_node = stack.pop()
+
+            if current_node.right:
+                stack.append(current_node.right)
+
+            if current_node.left:
+                stack.append(current_node.right)
+            fn(self.value)
+
 
     # Part 2 -----------------------
 

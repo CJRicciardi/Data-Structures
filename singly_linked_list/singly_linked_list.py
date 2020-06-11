@@ -88,7 +88,7 @@ class LinkedList:
     Node's data 
     '''
     def remove_head(self):
-        if self.head is None:
+        if self.length == 0:
             return None
         # save the head Node's data
         data = self.head.get_value()
